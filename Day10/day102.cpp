@@ -2,49 +2,97 @@
 
 using namespace std;
 
-int main(){
-    freopen("day102.in","r",stdin);
+int main() {
+    freopen("day102.in", "r", stdin);
     string cmd;
     int cycle = 1;
     int x = 1;
-    vector<vector<char>>screen;
-    vector<char>line(40,'.');
+    vector<int> vect = {40, 80, 120, 160, 200, 240};
+    vector<int> ans;
+    vector<char> line;
+    vector<vector<char>> screen;
+    int drawing = 0;
     int i = 0;
-    bool processing = false;
-    while(cin >> cmd){
-        if(cin.eof()){
+    int sprite = 1;
+    while (cin >> cmd) {
+        if (cin.eof()) {
             break;
-        }
-        else{
-            if(cmd == "noop"){
-                if(cycle%40 == 0){
-                    break;
+        } else {
+            if (cmd == "noop") {
+                cout << cycle << ": " << x << endl;
+                if (drawing == sprite || drawing == sprite - 1 || drawing == sprite + 1) {
+                    line.push_back('#');
+                } else {
+                    line.push_back('.');
                 }
-                i=x-1;
-                line[i] = '#';
+                if (cycle == vect[i]) {
+                    screen.push_back(line);
+                    line.clear();
+                    ans.push_back(x);
+                    i++;
+                    sprite = 1;
+                    drawing = 0;
+                }
                 cycle++;
-                continue;
-            } else if(cmd == "addx"){
+                drawing++;
+            } else if (cmd == "addx") {
+                // start of 1st cycle
                 int y;
                 cin >> y;
+                if (drawing == sprite || drawing == sprite - 1 || drawing == sprite + 1) {
+                    line.push_back('#');
+                } else {
+                    line.push_back('.');
+                }
+                if (cycle == vect[i]) {
+                    screen.push_back(line);
+                    line.clear();
+                    ans.push_back(x);
+                    i++;
+                    sprite = 1;
+                    drawing = 0;
+                }
 
-                line[i] = '#';
-                if(cycle%40 == 0){
-                    break;
-                }
-                i=x-1;
+                cout << cycle << ": " << x << endl;
+                drawing++;
+                // end of first cycle
                 cycle++;
-                line[i] = '#';
-                if(cycle%40 == 0){
-                    break;
+                // start of second cycle
+                if (drawing == sprite || drawing == sprite - 1 || drawing == sprite + 1) {
+                    line.push_back('#');
+                } else {
+                    line.push_back('.');
                 }
-                i=x-1;
-                x+=y;
+                if (cycle == vect[i]) {
+                    screen.push_back(line);
+                    line.clear();
+                    ans.push_back(x);
+                    i++;
+                    sprite = 1;
+                    drawing = 0;
+                }
+
+                cout << cycle << ": " << x << endl;
+                x += y;
+                sprite = x;
+                drawing++;
+                // end of second cycle
                 cycle++;
             }
         }
     }
-    for(auto i:line){
-        cout << i;
+    int anss = 0;
+    for (auto i = 0; i < vect.size(); i++) {
+        cout << vect[i] * ans[i] << " ";
+        anss += vect[i] * ans[i];
+    }
+    cout << endl;
+    cout << "Ans:" << anss << endl;
+
+    for (auto i : screen) {
+        for (auto j : i) {
+            cout << j;
+        }
+        cout << endl;
     }
 }
