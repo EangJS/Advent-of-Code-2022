@@ -23,19 +23,19 @@ def bfs(grid, pos):
                     visited.append((i, j))
 
 
-grid = [[x for x in line] for line in f.split("\n")]
-y, x = [(n, r.index("S"))
-        for n, r in enumerate(grid) if "S" in r][0]  # start coordinates
-y2, x2 = [(n, r.index("E"))
-          for n, r in enumerate(grid) if "E" in r][0]  # end coordinates
-grid[y][x] = "a"
-w = len(grid[0])
-h = len(grid)
-final_path = bfs(grid, (x, y))
-print(len(final_path)-1)
+if __name__ == "__main__":
+    grid = [[x for x in line] for line in f.split("\n")]
+    y, x = [(n, r.index("S"))
+            for n, r in enumerate(grid) if "S" in r][0]  # start coordinates
+    y2, x2 = [(n, r.index("E"))
+              for n, r in enumerate(grid) if "E" in r][0]  # end coordinates
+    grid[y][x] = "a"
+    w = len(grid[0])
+    h = len(grid)
+    final_path = bfs(grid, (x, y))
+    print(len(final_path)-1)
 
-
-starts = [(c, r) for r in range(len(grid))
-          for c in range(len(grid[0])) if grid[r][c] == "a"]
-part2 = [len(bfs(grid, pos)) - 1 for pos in starts if bfs(grid, pos)]
-print(min(part2))
+    starts = [(c, r) for r in range(len(grid))
+              for c in range(len(grid[0])) if grid[r][c] == "a"]
+    part2 = [len(bfs(grid, pos)) - 1 for pos in starts if bfs(grid, pos)]
+    print(min(part2))
